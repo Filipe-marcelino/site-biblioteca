@@ -1,8 +1,37 @@
-from flask import Flask,render_template;
-from flask_sqlalchemy import SQLAlchemy
+from flask import Flask,render_template,request, redirect, url_for;
+
+from db import db
+from modelo import Usuario
 
 app = Flask(__name__)
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
+db.init_app(app)
+
+
+@app.route('/cadastro_usuario', methods=['GET', 'POST'])
+def cadastro_usuario():
+    if request.method == 'POST': # verifica se o método usado foi o POST
+        nome = request.form['nomeForm']# pega o valor do campo nomeForm do formulário
+        email = request.form['emailForm'] # pega o valor do campo emailForm do formulário
+        senha = request.form['senhaForm'] # pega o valor do campo senhaForm do formulário
+
+        novo_usuario = Usuario(nome=nome, email=email, senha=senha)
+        db.session.add(novo_usuario)
+        db.session.commit()
+
+        return redirect(url_for('index'))
+        # renderiza a página cadastro.html e passa os valores de nome e email para ela
+    return render_template('cadastro_usuario.html')
+
 
 @app.route('/')
 def index():
     return render_template('index.html')
+
+
+if __name__ == '__main__':
+    with app.app_context():
+    # cria o contexto da aplicação web
+        db.create_all()
+        # cria todas as tabelas do banco de dados que ainda não existem
+    app.run()
