@@ -1,5 +1,5 @@
-from flask import Flask,render_template,request, redirect, url_for;
-
+from flask import Flask, render_template, request, redirect, url_for;
+from werkzeug.security import check_password_hash;
 from db import db
 from modelo import Usuario
 
@@ -7,6 +7,9 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
 db.init_app(app)
 
+@app.route('/')
+def index():
+    return render_template('index.html')
 
 @app.route('/cadastro_usuario', methods=['GET', 'POST'])
 def cadastro_usuario():
@@ -23,11 +26,25 @@ def cadastro_usuario():
         # renderiza a página cadastro.html e passa os valores de nome e email para ela
     return render_template('cadastro_usuario.html')
 
+@app.route('/login', methods=["GET", "POST"])
+def login():
+    if request.method == 'POST':
+        email = request.form['emailForm']
+        senha = request.form['senhaForm']
 
-@app.route('/')
-def index():
-    return render_template('index.html')
+         # Consulta no banco
+        usuario = Usuario.query.filter_by(email=email).first()
+        print(usuario)
 
+        if usuario and usuario.senha == senha:
+            return f"Login bem-sucedido! Bem-vindo {usuario.nome}"
+        else:
+            return "Usuário ou senha inválidos"
+    return render_template('login.html')
+
+@app.route('/produtos', methods=["GET", "POST"])
+def produtos():
+    return render_template('produtos.html')
 
 if __name__ == '__main__':
     with app.app_context():
