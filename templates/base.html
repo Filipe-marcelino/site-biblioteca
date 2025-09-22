@@ -8,11 +8,23 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
+    <div class="container_branco">
 
+    </div>
+    <div class="menu">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('cadastro_usuario') }}">Cadastre-se</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('cadastrar_produtos') }}">Produtos</a>
+    </div>
     <div class="conteudo">
-        {% block conteudo %}
     
+        {% block conteudo %}
+            
+            
         {% endblock %}
+    </div>
+    <div class="rodape">
     </div>
 </body>
 </html>

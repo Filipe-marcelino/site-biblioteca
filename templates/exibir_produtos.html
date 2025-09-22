@@ -1,0 +1,26 @@
+{% extends 'base.html'%}
+{% block titulo %} Exibir Produtos {% endblock %}
+
+{% block conteudo %}
+    <h1>Produtos cadastrados</h1>
+
+    {% if produtos %}
+    <table border="1">
+        <tr>
+            <th>Nome</th>
+            <th>Preço</th>
+            <th>Descrição</th>
+        </tr>
+        {% for produto in produtos %}
+        <tr>
+            <td>{{ produto.nome }}</td>
+            <td>R$ {{ produto.preco }}</td>
+            <td>{{ produto.descricao }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% else %}
+        <p>Nenhum produto cadastrado.</p>
+    {% endif %}
+
+{% endblock %}

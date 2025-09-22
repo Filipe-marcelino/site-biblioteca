@@ -1,11 +1,13 @@
-from flask import Flask, render_template, request, redirect, url_for;
+from flask import Flask, render_template, request, redirect, url_for, flash;
 from werkzeug.security import check_password_hash;
-from db import db
-from modelo import Usuario, Produto
+from modelo import engine, Usuario, Produto
+from sqlalchemy import create_engine, Column, String, Integer, Float
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
-db.init_app(app)
+app.secret_key = "SENHASUPERHIPERMEGASECRETAUAAAAAU"
+Sessao_base = sessionmaker(engine)
 
 @app.route('/')
 def index():
@@ -19,8 +21,9 @@ def cadastro_usuario():
         senha = request.form['senhaForm'] # pega o valor do campo senhaForm do formulário
 
         novo_usuario = Usuario(nome=nome, email=email, senha=senha)
-        db.session.add(novo_usuario)
-        db.session.commit()
+        with Sessao_base() as sessao: # instancia a Sessao_base como a variável 'sessao'
+            sessao.add(novo_usuario)
+            sessao.commit()
 
         return redirect(url_for('index'))
         # renderiza a página cadastro.html e passa os valores de nome e email para ela
@@ -32,9 +35,10 @@ def login():
         email = request.form['emailForm']
         senha = request.form['senhaForm']
 
-         # Consulta no banco
-        usuario = Usuario.query.filter_by(email=email).first()
-        print(usuario)
+        # Consulta no banco
+        with Sessao_base() as sessao:
+            usuario = sessao.query(Usuario).filter_by(email=email).first()
+            print(usuario)
 
         if usuario and usuario.senha == senha:
             return f"Login bem-sucedido! Bem-vindo {usuario.nome}"
@@ -42,23 +46,33 @@ def login():
             return "Usuário ou senha inválidos"
     return render_template('login.html')
 
-@app.route('/produtos', methods=["GET", "POST"])
-def produtos():
+@app.route('/cadastrar_produtos', methods=["GET", "POST"])
+def cadastrar_produtos():
     if request.method == 'POST': # verifica se o método usado foi o POST
         nome = request.form['nome']
         preco = request.form['preco']
         descricao = request.form['descricao']
 
-        novo_produto = Produto(nome=nome, preco=preco, descricao=descricao)
-        db.session.add(novo_produto)
-        db.session.commit()
+        if int(preco) <= 0:
+            flash('O valor não pode ser menor do que 0. Coloque outrto valor.', category='error')
+            return redirect(url_for('cadastrar_produtos'))
+        else:
+            pass
 
-        return redirect(url_for('index'))
-    return render_template('produtos.html')
+        novo_produto = Produto(nome=nome, preco=preco, descricao=descricao)
+        with Sessao_base() as sessao: # instancia a Sessao_base como a variável 'sessao'
+            sessao.add(novo_produto)
+            sessao.commit()
+
+        return redirect(url_for('cadastrar_produtos'))
+    return render_template('cadastrar_produtos.html')
+
+@app.route('/exibir_produtos', methods=["GET", "POST"])
+def exibir_produtos():
+    with Sessao_base() as sessao:
+            produtos = sessao.query(Produto).all()
+            print(produtos)
+    return render_template("exibir_produtos.html", produtos=produtos)
 
 if __name__ == '__main__':
-    with app.app_context():
-    # cria o contexto da aplicação web
-        db.create_all()
-        # cria todas as tabelas do banco de dados que ainda não existem
-    app.run()
+    app.run(debug=True)

@@ -1,0 +1,23 @@
+{% extends 'base.html'%}
+{% block titulo %} Produtos {% endblock %}
+
+{% block conteudo %}
+
+<h1>Essa é a pagina de produtos</h1>
+<form action="/cadastrar_produtos" method="post">
+    Nome: <input type="text" name="nome">
+    Preço: <input type="text" name="preco">
+    Descrição: <input type="text" name="descricao">
+    <input type="submit" value="Enviar">
+</form>
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    <ul>
+      {% for category, message in messages %}
+        <li class="{{ category }}">{{ message }}</li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endwith %}
+
+{% endblock %}
