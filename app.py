@@ -72,7 +72,62 @@ def exibir_produtos():
     with Sessao_base() as sessao:
             produtos = sessao.query(Produto).all()
             print(produtos)
-    return render_template("exibir_produtos.html", produtos=produtos)
+    return render_template("produtos.html", produtos=produtos)
+
+@app.route('/remover_produto', methods=["GET", "POST"])
+def remover_produto():
+    pro_id = request.form['id']
+
+    with Sessao_base() as sessao:
+        produto = sessao.query(Produto).filter_by(id=pro_id).first()
+        if produto:
+            sessao.delete(produto)
+            sessao.commit()
+        else:
+            flash("Produto não encontrado.", category="error")
+    
+    return redirect(url_for('exibir_produtos'))
+
+@app.route('/editar_produto/<id>', methods=["GET", "POST"])
+def editar_produto(id):
+    if request.method == 'POST':
+        
+        pro_id = request.form['id']
+        nome = request.form['nome']
+        preco = request.form['preco']
+        descricao = request.form['descricao']
+
+        if int(preco) <= 0:
+            flash('O valor não pode ser menor do que 0. Coloque outrto valor.', category='error')
+            return redirect(url_for('editar_produto'))
+        else:
+            pass
+
+        with Sessao_base() as sessao: # instancia a Sessao_base como a variável 'sessao'
+            produto = sessao.query(Produto).filter_by(id=pro_id).first()
+
+            if not produto:
+                flash("Produto não encontrado.", category="error")
+                return redirect(url_for("exibir_produtos"))
+
+            produto.nome = nome
+            produto.preco = preco
+            produto.descricao = descricao
+            sessao.commit()
+
+            return redirect(url_for('exibir_produtos'))
+    
+    if request.method == 'GET':
+        with Sessao_base() as sessao:
+            produto = sessao.query(Produto).filter_by(id=id).first()
+
+            if not produto:
+                flash("Produto não encontrado.", category="error")
+                return redirect(url_for("exibir_produtos"))
+
+            return render_template("editar_produto.html", produto=produto)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
