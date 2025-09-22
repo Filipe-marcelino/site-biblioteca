@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect, url_for;
 from werkzeug.security import check_password_hash;
 from db import db
-from modelo import Usuario
+from modelo import Usuario, Produto
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///dados.db'
@@ -44,6 +44,16 @@ def login():
 
 @app.route('/produtos', methods=["GET", "POST"])
 def produtos():
+    if request.method == 'POST': # verifica se o método usado foi o POST
+        nome = request.form['nome']
+        preco = request.form['preco']
+        descricao = request.form['descricao']
+
+        novo_produto = Produto(nome=nome, preco=preco, descricao=descricao)
+        db.session.add(novo_produto)
+        db.session.commit()
+
+        return redirect(url_for('index'))
     return render_template('produtos.html')
 
 if __name__ == '__main__':
