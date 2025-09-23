@@ -1,5 +1,8 @@
 {% extends 'base.html'%}
 {% block titulo %} Exibir Produtos {% endblock %}
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='produtos.css') }}">
+{% endblock %}
 
 {% block conteudo %}
     <h1>Produtos cadastrados</h1>
@@ -10,7 +13,7 @@
             <th>Nome</th>
             <th>Preço</th>
             <th>Descrição</th>
-            <th>Ações</th>
+            <th></th>
         </tr>
         {% for produto in produtos %}
         <tr>
@@ -18,14 +21,13 @@
             <td>R$ {{ produto.preco }}</td>
             <td>{{ produto.descricao }}</td>
             <td>
-                <form method="POST" action="{{ url_for('remover_produto') }}" style="display:inline;">
+                <a>
+                    <form action="{{ url_for('remover_produto') }}" method="post" style="display:inline;">
                     <input type="hidden" name="id" value="{{ produto.id }}">
-                    <button type="submit" onclick="return confirm('Tem certeza que deseja remover este produto?');">Remover</button>
-                </form>
-
-                <a href="{{ url_for('editar_produto', id=produto.id) }}">
-                    <button type="button">Alterar</button>
+                    <button type="submit">Remover</button>
+                    </form>
                 </a>
+                <a href="{{ url_for('editar_produto', id=produto.id) }}"><button type="button">Editar</button></a>
             </td>
         </tr>
         {% endfor %}

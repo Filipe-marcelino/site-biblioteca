@@ -1,0 +1,15 @@
+ table, th, td {
+    border:1px solid black;
+    border-collapse: collapse;
+    width: 900px;
+    height: 50px;
+}
+
+th, td, a, p {
+    font-size: 20px;
+}
+
+th {
+    background-color: rgb(100, 41, 104);
+    color: white;
+}

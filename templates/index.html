@@ -2,6 +2,9 @@
 {% block titulo %} Página Inicial {% endblock %}
 
 {% block conteudo %}
-
-
+<h3>PÁGINAS:</h3><br>
+<a href="{{ url_for('cadastro_usuario') }}">Cadastre-se</a><br>
+<a href="{{ url_for('login') }}">Login</a><br>
+<a href="{{ url_for('cadastrar_produtos') }}">Cadastrar Produtos</a><br>
+<a href="{{ url_for('exibir_produtos') }}">Lista de Produtos</a>
 {% endblock %}

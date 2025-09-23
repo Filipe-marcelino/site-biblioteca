@@ -5,14 +5,14 @@
 }
 
 body, html {
-    height: 125vh;
+    height: 100vh;
     font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     background-color: white;
 }
 
 body {
     display: flex;
-    background-color: bisque;
+    background-color: rgb(250, 250, 250);
     justify-content: center;
 }
 
@@ -29,7 +29,7 @@ body form{
     height: 5vh;
     width: 100%;
     justify-content: space-evenly;
-    background-color: rgb(73, 129, 175);
+    background-color: rgb(110, 76, 110);
     position: fixed;
     top: 0;
 }
@@ -37,11 +37,11 @@ body form{
 .menu a {
     margin: 10px;
     text-decoration: none;
-    color: black;
+    color: rgb(255, 255, 255);
+    font-size: 20px;
 }
 
 a:hover {
-    text-transform: uppercase;
     font-weight: bold;
 }
 
@@ -49,8 +49,6 @@ a:hover {
     margin-top: 8vh;
 }
 
-/* .container_branco {
+button {
     width: 100%;
-    height: 200px;
-    background-color: white;
-}  */
+}

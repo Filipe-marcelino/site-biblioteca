@@ -53,7 +53,7 @@ def cadastrar_produtos():
         preco = request.form['preco']
         descricao = request.form['descricao']
 
-        if int(preco) <= 0:
+        if float(preco) <= -1:
             flash('O valor não pode ser menor do que 0. Coloque outrto valor.', category='error')
             return redirect(url_for('cadastrar_produtos'))
         else:
@@ -64,7 +64,7 @@ def cadastrar_produtos():
             sessao.add(novo_produto)
             sessao.commit()
 
-        return redirect(url_for('cadastrar_produtos'))
+        return redirect(url_for('exibir_produtos'))
     return render_template('cadastrar_produtos.html')
 
 @app.route('/exibir_produtos', methods=["GET", "POST"])
@@ -97,7 +97,7 @@ def editar_produto(id):
         preco = request.form['preco']
         descricao = request.form['descricao']
 
-        if int(preco) <= 0:
+        if float(preco) <= -1:
             flash('O valor não pode ser menor do que 0. Coloque outrto valor.', category='error')
             return redirect(url_for('editar_produto'))
         else:
@@ -126,8 +126,6 @@ def editar_produto(id):
                 return redirect(url_for("exibir_produtos"))
 
             return render_template("editar_produto.html", produto=produto)
-
-
 
 if __name__ == '__main__':
     app.run(debug=True)

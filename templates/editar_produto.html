@@ -3,7 +3,6 @@
 
 {% block conteudo %}
     <h1>Editar Produto</h1>
-
     <form method="POST" action="{{ url_for('editar_produto', id=produto.id) }}">
         <input type="hidden" name="id" value="{{ produto.id }}">
 

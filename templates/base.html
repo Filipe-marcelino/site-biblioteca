@@ -8,14 +8,12 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <div class="container_branco">
-
-    </div>
     <div class="menu">
         <a href="{{ url_for('index') }}">Home</a>
         <a href="{{ url_for('cadastro_usuario') }}">Cadastre-se</a>
         <a href="{{ url_for('login') }}">Login</a>
-        <a href="{{ url_for('cadastrar_produtos') }}">Produtos</a>
+        <a href="{{ url_for('cadastrar_produtos') }}">Cadastrar Produtos</a>
+        <a href="{{ url_for('exibir_produtos') }}">Lista de Produtos</a>
     </div>
     <div class="conteudo">
     
