@@ -1,10 +1,24 @@
 {% extends 'base.html'%}
 {% block titulo %} Página Inicial {% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='home.css') }}">
+{% endblock %}
+
 {% block conteudo %}
-<h3>PÁGINAS:</h3><br>
-<a href="{{ url_for('cadastro_usuario') }}">Cadastre-se</a><br>
-<a href="{{ url_for('login') }}">Login</a><br>
-<a href="{{ url_for('cadastrar_produtos') }}">Cadastrar Produtos</a><br>
-<a href="{{ url_for('exibir_produtos') }}">Lista de Produtos</a>
+<h1>PÁGINAS:</h1><br>
+<div class="paginas">
+    <div class="topico">
+        <a href="{{ url_for('cadastro_usuario') }}">Cadastre-se</a>
+    </div>
+    <div class="topico">
+        <a href="{{ url_for('login') }}">Login</a>
+    </div>
+    <div class="topico">
+        <a href="{{ url_for('cadastrar_produtos') }}">Cadastrar Produtos</a>
+    </div>
+    <div class="topico">
+        <a href="{{ url_for('exibir_produtos') }}">Lista de Produtos</a>
+    </div>
+</div>
 {% endblock %}

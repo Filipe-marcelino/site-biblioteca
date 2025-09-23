@@ -24,7 +24,6 @@ def cadastro_usuario():
         with Sessao_base() as sessao: # instancia a Sessao_base como a variável 'sessao'
             sessao.add(novo_usuario)
             sessao.commit()
-
         return redirect(url_for('index'))
         # renderiza a página cadastro.html e passa os valores de nome e email para ela
     return render_template('cadastro_usuario.html')

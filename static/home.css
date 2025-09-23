@@ -1,0 +1,16 @@
+h1{
+    text-align: center;
+}
+
+.topico{
+    border-radius: 10px;
+    width: 250px;
+    padding: 20px;
+    text-align: center;
+    background-color: rgb(100, 41, 104);
+    margin: 20px;
+}
+
+.topico a{
+    color: white;
+}
